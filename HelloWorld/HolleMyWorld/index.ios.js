@@ -12,6 +12,12 @@ import {
   View
 } from 'react-native';
 
+function myLog() {
+  console.log("adtad");
+  console.log("fuck")  
+}
+
+
 export default class HolleMyWorld extends Component {
   render() {
     return (
