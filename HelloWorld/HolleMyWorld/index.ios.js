@@ -23,6 +23,7 @@ export default class HolleMyWorld extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
+          Holle World!
           Welcome to React Native!
         </Text>
         <Text style={styles.instructions}>
