@@ -16,41 +16,52 @@ export default class testFlow extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-        function functionName() {
-a
-        }
+        <Text style = {styles.textStyle}> alignSelf的对齐方式主要有四种：flex-start、 flex-end、 center、  auto、 stretch。</Text>
+        <View style = {[styles.view,]}><Text>自由摆放</Text></View>
+        <View style = {[styles.view,styles.center]}><Text>居中摆放</Text></View>
+        <View style = {[styles.view,styles.left]}><Text>局桌摆放</Text></View>
+        <View style = {[styles.view,styles.right]}><Text>具有拜访</Text></View>
+        <Text style = {styles.textStyle}>alignItems是alignSelf的变种，跟alignSelf的功能类似，可用于水平居中；justifyContent用于垂直居中，属性较多，可以了解下。</Text>
+        <View style = {[styles.alignItemsStyle,]}><Text>方块居中</Text></View>
       </View>
     );
+
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    borderColor: 'red',
+    borderWidth: 0.5
+  },
+  alignItemsStyle: {
+    flex: 1,
+    borderColor: 'red',
+    borderWidth: 3,
+    justifyContent:'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    height: 50
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  textStyle: {
+    top: 40,
+    bottom: 10
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  view: {
+    borderWidth: 5,
+    borderColor: 'blue',
+    width: 100,
+    height: 40
   },
+  center: {
+    alignSelf: 'center'
+  },
+  left: {
+    alignSelf:'flex-start'
+  },
+  right: {
+    alignSelf: 'flex-end'
+  }
 });
 
 AppRegistry.registerComponent('testFlow', () => testFlow);
