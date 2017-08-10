@@ -20,7 +20,9 @@ export default class MyApp extends Component {
     return (
       <View style={styles.container}>
         <View style = {{height: 40, borderWidth: 1, borderColor: 'red'}}>
-
+          <View>
+            <Text>有补全了</Text>
+          </View>
         </View>
         <Text style={styles.welcome}>
           React Native 入门学习!
@@ -44,7 +46,9 @@ export default class MyApp extends Component {
           Cmd+D or shake for dev menu
         </Text>
       </View>
+
     );
+
   }
 }
 
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   styleView: {
-    
+
   },
     pic: {
       width: 100,
