@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: "row",
     justifyContent: "space-around",
-    alignItems: "center"
+    alignItems: "center",
+    borderWidth: 0.5,
+    borderColor: '#55a448',
   },
   input: {
     flex: 1,

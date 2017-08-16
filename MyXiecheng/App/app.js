@@ -7,24 +7,108 @@ import {
   Text,
   StyleSheet,
   Platform,
+  ListView,
+  keyboard,
+
  } from "react-native";
 // 引入我们的Header模块
 import Header from "./header";
 // 引入我们的Footer模块
 import Footer from "./footer";
+import Row from "./row";
 
 // 定义App类，这个类是Component的子类
 class App extends Component {
+
+  // 构造方法,初始化state
+  constructor(props) {
+    super(props);
+    // 创建ListView.DataSource
+    const ds = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
+    // 初始化2个状态
+    this.state = {
+      value: "",
+      items: [],
+      dataSource: ds.cloneWithRows([]),
+    };
+  }
+  /*
+  一个通用的setSource方法,方便调用
+  */
+  setSource(items,itemsDatasource,otherState = {}){
+    this.setState({
+      items,
+      dataSource: this.state.dataSource.cloneWithRows(itemsDatasource),
+      ...otherState
+    });
+  }
+  // 更新state
+    // this.setState({
+    //   items: newItems,
+    //   value: ""
+    // });
+
+  /*
+     传给Header.TextInput.onSubmitEditing的回调函数
+     更新this.state.items
+     设置this.state.value为空
+     更新this.state.dataSource
+     */
+  handleAddItem() {
+    if (!this.state.value) {
+      return;
+    }
+     // 创建一个新的items,从this.state.items里copy现有的数据,再增加一个新的
+     const newItems = [
+       // 展开运算符 ... ,
+       ...this.state.items,
+       {
+         key: Date.now(),
+         text: this.state.value,
+         complete: false
+       }
+     ];
+     this.setSource(newItems,newItems,{value: ""})
+  }
+
+
   /*
    实现App类的render方法，这个方法返回一个View，
    其组成分别是Header, Content和Footer
    */
+
+
   render() {
     return (
       <View style = {styles.container}>
-        <Header />
+        <Header
+          value = {this.state.value}
+          onAddItem = {this.handleAddItem.bind(this)}
+          onChange=  {(value) => this.setState({value})}
+        />
         <View style = {styles.content}>
-          <Text>我是Content</Text>
+            <ListView
+              style = {styles.list}
+              enableEmptySections
+              dataSource = {this.state.dataSource}
+              onScroll = {() => keyboard.dismiss()}
+              renderRow = {({key,...value}) => {
+                return (
+                  <Row
+                    key = {key}
+                    {...value}
+                  />
+                )
+              }}
+              renderSeparator={(sectionId, rowId) => {
+             return <View key={rowId} style={styles.separator}/>
+           }}
+         />
+{/* enableEmptySections，在未来的react native版本中，ListView将默认渲染空section headers，所以这里设置这个参数。
+onScroll={() => Keyboard.dismiss()}会在ListView手指滚动的时候，将输入框隐藏起来，给用户更好的体验
+({key, ...value})使用ES6的...来将item的属性动态的传给Row组件
+renderSeparator用于渲染数据行的间隔横线
+ */}
         </View>
         <Footer />
       </View>
@@ -36,6 +120,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: "#f5f5f5",
+
       ...Platform.select({
         ios:{
           paddingTop: 64
@@ -45,7 +130,14 @@ const styles = StyleSheet.create({
     },
     content: {
       flex: 1
-    }
+    },
+    list: {
+    backgroundColor: '#FFF'
+  },
+  separator: {
+    borderWidth: 1,
+    borderColor: "#F5F5F5"
+  }
 });
 
 // 导出这个模块，供外部调用
