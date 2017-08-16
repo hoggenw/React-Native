@@ -31,6 +31,12 @@ class App extends Component {
       items: [],
       dataSource: ds.cloneWithRows([]),
     };
+    //比如我们今天的方法handleRemoveItem是App这个类的方法，
+    // 在JavaScript中，类方法是默认不绑定的，所以在handleRemoveItem这个类方法里，
+    // 如果我们不将this绑定的话，我们便无法在这个方法里使用this，否则会报this会undefined。 
+
+    this.setSource = this.setSource.bind(this);
+    this.handleToggleComplete = this.handleToggleComplete.bind(this);
   }
   /*
   一个通用的setSource方法,方便调用
@@ -71,7 +77,20 @@ class App extends Component {
      this.setSource(newItems,newItems,{value: ""})
   }
 
-
+  handleToggleComplete(key,complete) {
+    // 这里使用了Array.map方法，遍历todo list里每一条todo，
+    // 如果发现其key和传递进来的key相同，使用ES6的...操作符来更新complete状态。
+    const newItems = this.state.items.map((item) =>{
+      if (item.key !== key) {
+        return item;
+      }
+      return {
+        ...item,
+        complete
+      }
+    });
+    this.setSource(newItems, newItems);
+  }
   /*
    实现App类的render方法，这个方法返回一个View，
    其组成分别是Header, Content和Footer
@@ -96,6 +115,7 @@ class App extends Component {
                 return (
                   <Row
                     key = {key}
+                    onComplete = {(complete) => this.handleToggleComplete(key, complete)}
                     {...value}
                   />
                 )
