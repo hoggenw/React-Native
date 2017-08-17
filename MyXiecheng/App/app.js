@@ -33,10 +33,20 @@ class App extends Component {
     };
     //比如我们今天的方法handleRemoveItem是App这个类的方法，
     // 在JavaScript中，类方法是默认不绑定的，所以在handleRemoveItem这个类方法里，
-    // 如果我们不将this绑定的话，我们便无法在这个方法里使用this，否则会报this会undefined。 
+    // 如果我们不将this绑定的话，我们便无法在这个方法里使用this，否则会报this会undefined。
 
     this.setSource = this.setSource.bind(this);
     this.handleToggleComplete = this.handleToggleComplete.bind(this);
+    this.handleRemoveItem = this.handleAddItem.bind(this);
+    this.handleAddItem = this.handleAddItem.bind(this);
+
+  }
+
+  handleRemoveItem(key) {
+    const newItems = this.state.items.filter((item) =>{
+        return (item.key != key);
+    });
+    this.setSource(newItems, newItems);
   }
   /*
   一个通用的setSource方法,方便调用
@@ -115,6 +125,7 @@ class App extends Component {
                 return (
                   <Row
                     key = {key}
+                    onRemove = {() => this.handleRemoveItem(key)}
                     onComplete = {(complete) => this.handleToggleComplete(key, complete)}
                     {...value}
                   />
